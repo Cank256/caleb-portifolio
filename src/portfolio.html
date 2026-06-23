@@ -803,6 +803,31 @@
       resize(); draw();
     }
 
+    /* ---------- Work category tabs ---------- */
+    var workTabs = Array.prototype.slice.call(document.querySelectorAll(".work-tab"));
+    var workCards = Array.prototype.slice.call(document.querySelectorAll("#work-grid .pcard"));
+    var workGrid = document.getElementById("work-grid");
+    function applyWorkFilter(filter) {
+      var visible = 0;
+      workCards.forEach(function (card) {
+        var match = card.getAttribute("data-cat") === filter;
+        card.style.display = match ? "" : "none";
+        if (match) {
+          visible++;
+          card.querySelector(".pnum").textContent = ("0" + visible).slice(-2);
+        }
+      });
+    }
+    workTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        workTabs.forEach(function (t) { t.setAttribute("aria-selected", "false"); });
+        tab.setAttribute("aria-selected", "true");
+        if (workGrid) workGrid.setAttribute("aria-labelledby", tab.id);
+        applyWorkFilter(tab.getAttribute("data-filter"));
+      });
+    });
+    if (workTabs.length) { applyWorkFilter("websites"); }
+
     /* ---------- Contact form ---------- */
     var form = document.getElementById("contactForm");
     var status = document.getElementById("formStatus");
