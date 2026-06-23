@@ -25,7 +25,7 @@ function Index() {
   // The portfolio is authored as a single self-contained HTML file
   // (HTML + CSS + JS + GSAP) served from /caleb-portfolio.html.
   useEffect(() => {
-    window.location.replace("/caleb-portfolio.html");
+    window.location.replace("/portfolio");
   }, []);
 
   return (
