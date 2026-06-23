@@ -458,47 +458,88 @@
       <div class="wrap">
         <div class="section-tag reveal"><span class="num">03</span><span class="label">Portfolio</span><span class="line"></span></div>
         <h2 class="section-heading reveal">Selected Work</h2>
-        <div class="projects-grid">
-          <article class="pcard reveal" data-cursor="grow">
+        <div class="work-tabs reveal" role="tablist" aria-label="Filter selected work by category">
+          <button class="work-tab" role="tab" id="tab-websites" aria-controls="work-grid" aria-selected="true" data-filter="websites">Websites</button>
+          <button class="work-tab" role="tab" id="tab-webapps" aria-controls="work-grid" aria-selected="false" data-filter="webapps">Web Apps</button>
+          <button class="work-tab" role="tab" id="tab-mobile" aria-controls="work-grid" aria-selected="false" data-filter="mobile">Mobile Apps</button>
+          <button class="work-tab" role="tab" id="tab-graphics" aria-controls="work-grid" aria-selected="false" data-filter="graphics">Graphics &amp; Digital</button>
+        </div>
+        <div class="projects-grid" id="work-grid" role="tabpanel" aria-labelledby="tab-websites">
+          <!-- WEBSITES -->
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
             <span class="pnum">01</span>
-            <h3>Luigi Giussani Foundation Website</h3>
+            <h3>Luigi Giussani Foundation</h3>
             <p>A full corporate site with custom design and content management for an education-focused foundation.</p>
             <div class="pstack"><span>WordPress</span><span>Custom Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow">
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
             <span class="pnum">02</span>
+            <h3>Luigi Giussani Institute of Higher Education</h3>
+            <p>An institutional site with a modern frontend and a robust admin-driven backend for content.</p>
+            <div class="pstack"><span>NextJS</span><span>Laravel</span><span>Filament</span></div>
+            <div class="overlay"><span class="view">View Project</span></div>
+          </article>
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
+            <span class="pnum">03</span>
+            <h3>Rural Evangelical Ministries</h3>
+            <p>A mission-driven website spotlighting community outreach, ministry work and giving.</p>
+            <div class="pstack"><span>Web Design</span><span>CMS</span></div>
+            <div class="overlay"><span class="view">View Project</span></div>
+          </article>
+
+          <!-- WEB APPS -->
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+            <span class="pnum">01</span>
             <h3>ACT Now Teacher Platform</h3>
             <p>A teacher training and resource platform with a tailored UI/UX flow built for educators.</p>
             <div class="pstack"><span>Laravel</span><span>UI/UX Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow">
-            <span class="pnum">03</span>
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+            <span class="pnum">02</span>
             <h3>Flix 256</h3>
             <p>A movie &amp; TV search app with rich discovery, powered by a fast API-driven stack.</p>
-            <div class="pstack"><span>NodeJS</span><span>MongoDB</span><span>VueJS</span></div>
+            <div class="pstack"><span>VueJS</span><span>NodeJS</span><span>MongoDB</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow">
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+            <span class="pnum">03</span>
+            <h3>Payment Gateway</h3>
+            <p>A secure, scalable payment gateway integrating multiple provider APIs and transaction flows.</p>
+            <div class="pstack"><span>NodeJS</span><span>MongoDB</span><span>Payment APIs</span></div>
+            <div class="overlay"><span class="view">View Project</span></div>
+          </article>
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
             <span class="pnum">04</span>
-            <h3>Music &amp; Artists Search App</h3>
+            <h3>Music &amp; Artist Search App</h3>
             <p>A search experience for discovering music and artists with clean, responsive results.</p>
             <div class="pstack"><span>Laravel</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow">
-            <span class="pnum">05</span>
-            <h3>Payment Gateway <em style="color:var(--accent-2);font-style:normal;font-family:var(--font-mono);font-size:11px">(In Dev)</em></h3>
-            <p>A secure, scalable payment gateway in active development using a caching-first architecture.</p>
-            <div class="pstack"><span>NodeJS</span><span>REDIS</span><span>MongoDB</span></div>
+
+          <!-- MOBILE APPS -->
+          <article class="pcard reveal" data-cursor="grow" data-cat="mobile">
+            <span class="pnum">01</span>
+            <h3>Flix 256</h3>
+            <p>The mobile companion for Flix 256 — movie &amp; TV discovery on the go with a fluid native feel.</p>
+            <div class="pstack"><span>Mobile</span><span>API-Driven</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow">
-            <span class="pnum">06</span>
-            <h3>Church Media &amp; Brand</h3>
+          <article class="pcard reveal" data-cursor="grow" data-cat="mobile">
+            <span class="pnum">02</span>
+            <h3>Pearl Tour and Travel</h3>
+            <p>A travel companion app for browsing tours, destinations and booking experiences.</p>
+            <div class="pstack"><span>Mobile</span><span>Travel</span></div>
+            <div class="overlay"><span class="view">View Project</span></div>
+          </article>
+
+          <!-- GRAPHICS & DIGITAL -->
+          <article class="pcard reveal" data-cursor="grow" data-cat="graphics">
+            <span class="pnum">01</span>
+            <h3>REM Church Media &amp; Brand</h3>
             <p>Ongoing brand, social and video design work — graphics, reels, and event visuals.</p>
-            <div class="pstack"><span>Canva</span><span>Premiere Pro</span><span>Social Design</span></div>
+            <div class="pstack"><span>Branding</span><span>Premiere Pro</span><span>Social Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
         </div>
