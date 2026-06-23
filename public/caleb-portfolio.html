@@ -692,28 +692,6 @@
     if (hasGSAP && window.ScrollTrigger && !reduceMotion) {
       gsap.registerPlugin(ScrollTrigger);
       document.querySelectorAll("[data-wipe]").forEach(function (w) {
-        gsap.fromTo(w.querySelector ? w : w, {}, {});
-        gsap.fromTo(w, { "--x": "0%" }, {});
-        gsap.fromTo(getAfter(w), {}, {});
-      });
-      document.querySelectorAll("[data-wipe]").forEach(function (w) {
-        var bar = document.createElement("span");
-        ScrollTrigger.create({
-          trigger: w, start: "top 92%",
-          onEnter: function () { w.style.setProperty("--wipe", "1"); animateWipe(w); }
-        });
-      });
-    }
-    function getAfter() { return {}; }
-    function animateWipe(w) {
-      if (!hasGSAP) return;
-      var span = document.createElement("span");
-      // animate the ::after via a width var fallback using inline child
-    }
-
-    /* Simpler robust wipe via ScrollTrigger on a real element */
-    if (hasGSAP && window.ScrollTrigger && !reduceMotion) {
-      document.querySelectorAll("[data-wipe]").forEach(function (w) {
         var fill = document.createElement("span");
         fill.style.cssText = "position:absolute;left:0;top:0;height:1px;width:0;background:linear-gradient(90deg,transparent,var(--accent),var(--accent-2),transparent);";
         w.style.position = "relative";
