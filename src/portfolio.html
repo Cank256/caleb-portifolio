@@ -634,6 +634,27 @@
     </section>
   </main>
 
+  <!-- PROJECT CASE MODAL -->
+  <div class="pmodal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="pmTitle" aria-hidden="true">
+    <div class="pmodal-backdrop" data-modal-close></div>
+    <div class="pmodal-card" role="document">
+      <button class="pmodal-close" type="button" aria-label="Close project details" data-modal-close>&times;</button>
+      <span class="pmodal-cat" id="pmCat"></span>
+      <h3 class="pmodal-title" id="pmTitle"></h3>
+      <div class="pmodal-role"><span id="pmRole"></span> · <span id="pmYear"></span></div>
+      <p class="pmodal-body" id="pmBody"></p>
+      <div class="pmodal-section">
+        <h4>The Challenge</h4>
+        <p id="pmChallenge"></p>
+      </div>
+      <div class="pmodal-section">
+        <h4>What I Did</h4>
+        <p id="pmSolution"></p>
+      </div>
+      <div class="pmodal-stack" id="pmStack"></div>
+    </div>
+  </div>
+
   <footer>
     <div class="wrap footer-inner">
       <div>
