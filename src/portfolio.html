@@ -879,7 +879,54 @@
         applyWorkFilter(tab.getAttribute("data-filter"));
       });
     });
-    if (workTabs.length) { applyWorkFilter("websites"); }
+    if (workTabs.length) { applyWorkFilter("graphics"); }
+
+    /* ---------- Project case modal ---------- */
+    var modal = document.getElementById("projectModal");
+    var catLabels = { graphics: "Graphics & Digital", websites: "Website", webapps: "Web App", mobile: "Mobile App" };
+    var lastFocused = null;
+    function openModal(card) {
+      lastFocused = document.activeElement;
+      document.getElementById("pmCat").textContent = catLabels[card.getAttribute("data-cat")] || "Project";
+      document.getElementById("pmTitle").textContent = card.querySelector("h3").textContent;
+      document.getElementById("pmRole").textContent = card.getAttribute("data-role") || "";
+      document.getElementById("pmYear").textContent = card.getAttribute("data-year") || "";
+      document.getElementById("pmBody").textContent = card.querySelector("p").textContent;
+      document.getElementById("pmChallenge").textContent = card.getAttribute("data-challenge") || "";
+      document.getElementById("pmSolution").textContent = card.getAttribute("data-solution") || "";
+      var stackHost = document.getElementById("pmStack");
+      stackHost.innerHTML = "";
+      card.querySelectorAll(".pstack span").forEach(function (s) {
+        var el = document.createElement("span");
+        el.textContent = s.textContent;
+        stackHost.appendChild(el);
+      });
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      var closeBtn = modal.querySelector(".pmodal-close");
+      if (closeBtn) closeBtn.focus();
+    }
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+    workCards.forEach(function (card) {
+      card.addEventListener("click", function () { openModal(card); });
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(card); }
+      });
+    });
+    Array.prototype.slice.call(modal.querySelectorAll("[data-modal-close]")).forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
 
     /* ---------- Contact form ---------- */
     var form = document.getElementById("contactForm");
