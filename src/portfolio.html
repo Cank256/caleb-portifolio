@@ -202,6 +202,10 @@
     .photo-card .initials { font-family: var(--font-display); font-weight: 700; font-size: clamp(90px, 16vw, 160px); color: var(--accent); letter-spacing: -0.04em; position: relative; text-shadow: var(--glow-accent); }
     .photo-card .frame { position: absolute; inset: 16px; border: 1px solid var(--border); border-radius: 10px; }
     .photo-card .tag { position: absolute; bottom: 18px; left: 18px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+    .photo-card .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; filter: saturate(1.02) contrast(1.02); }
+    .photo-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,15,0) 45%, rgba(10,10,15,0.55) 100%); pointer-events: none; }
+    .photo-card .frame { z-index: 2; }
+    .photo-card .tag { z-index: 2; background: rgba(10,10,15,0.55); padding: 5px 9px; border-radius: 6px; backdrop-filter: blur(4px); }
 
     .about-bio { font-size: 17px; color: #cfcfdb; margin-bottom: 30px; }
     .about-bio strong { color: var(--text); font-weight: 600; }
@@ -259,6 +263,34 @@
       font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #04130d;
       background: var(--accent); padding: 12px 22px; border-radius: 8px; box-shadow: var(--glow-accent);
     }
+
+    /* ---------- Project case modal ---------- */
+    .pmodal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .pmodal.open { display: flex; }
+    .pmodal-backdrop { position: absolute; inset: 0; background: rgba(6,6,10,0.72); backdrop-filter: blur(8px); opacity: 0; transition: opacity .3s ease; }
+    .pmodal.open .pmodal-backdrop { opacity: 1; }
+    .pmodal-card {
+      position: relative; width: min(640px, 100%); max-height: 88vh; overflow-y: auto;
+      background: linear-gradient(165deg, var(--surface), var(--surface-2)); border: 1px solid var(--border-strong);
+      border-radius: 18px; padding: 40px; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), var(--glow-accent);
+      transform: translateY(24px) scale(0.97); opacity: 0; transition: transform .35s cubic-bezier(.2,.7,.3,1), opacity .35s ease;
+    }
+    .pmodal.open .pmodal-card { transform: translateY(0) scale(1); opacity: 1; }
+    .pmodal-card::before { content: ""; position: absolute; inset: 0; border-radius: 18px; background: radial-gradient(circle at 80% 0%, rgba(0,229,160,0.1), transparent 55%); pointer-events: none; }
+    .pmodal-close {
+      position: absolute; top: 18px; right: 18px; width: 38px; height: 38px; border-radius: 50%; cursor: none;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 18px; line-height: 1;
+      display: flex; align-items: center; justify-content: center; transition: all .25s ease;
+    }
+    .pmodal-close:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow-accent); transform: rotate(90deg); }
+    .pmodal-cat { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); }
+    .pmodal-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.02em; margin: 10px 0 6px; }
+    .pmodal-role { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+    .pmodal-body { font-size: 16px; color: #c4c4d2; line-height: 1.7; margin: 22px 0; }
+    .pmodal-section h4 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 18px 0 6px; }
+    .pmodal-section p { font-size: 15px; color: #b8b8c6; line-height: 1.65; }
+    .pmodal-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .pmodal-stack span { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 11px; border: 1px solid var(--border); border-radius: 6px; color: var(--accent); }
 
     /* ---------- Volunteering ---------- */
     .vol-card {
@@ -390,7 +422,7 @@
         <div class="about-grid">
           <div class="photo-card reveal-l" data-cursor="grow">
             <span class="frame" aria-hidden="true"></span>
-            <span class="initials">CN</span>
+            <img class="photo" src="/__l5e/assets-v1/5b30cb18-c291-46df-81b1-0aef82719f7c/caleb-profile.jpg" alt="Caleb Nkunze, web developer and designer based in Kampala" loading="lazy" />
             <span class="tag">// caleb_nkunze.jpg</span>
           </div>
           <div class="reveal-r">
@@ -459,28 +491,37 @@
         <div class="section-tag reveal"><span class="num">03</span><span class="label">Portfolio</span><span class="line"></span></div>
         <h2 class="section-heading reveal">Selected Work</h2>
         <div class="work-tabs reveal" role="tablist" aria-label="Filter selected work by category">
-          <button class="work-tab" role="tab" id="tab-websites" aria-controls="work-grid" aria-selected="true" data-filter="websites">Websites</button>
+          <button class="work-tab" role="tab" id="tab-graphics" aria-controls="work-grid" aria-selected="true" data-filter="graphics">Graphics &amp; Digital</button>
+          <button class="work-tab" role="tab" id="tab-websites" aria-controls="work-grid" aria-selected="false" data-filter="websites">Websites</button>
           <button class="work-tab" role="tab" id="tab-webapps" aria-controls="work-grid" aria-selected="false" data-filter="webapps">Web Apps</button>
           <button class="work-tab" role="tab" id="tab-mobile" aria-controls="work-grid" aria-selected="false" data-filter="mobile">Mobile Apps</button>
-          <button class="work-tab" role="tab" id="tab-graphics" aria-controls="work-grid" aria-selected="false" data-filter="graphics">Graphics &amp; Digital</button>
         </div>
-        <div class="projects-grid" id="work-grid" role="tabpanel" aria-labelledby="tab-websites">
+        <div class="projects-grid" id="work-grid" role="tabpanel" aria-labelledby="tab-graphics">
+          <!-- GRAPHICS & DIGITAL -->
+          <article class="pcard reveal" data-cursor="grow" data-cat="graphics" data-role="Lead Designer &amp; Media" data-year="2020 — Present" data-challenge="REM needed a consistent visual identity and a steady stream of high-quality media to support its services, events and community outreach across social platforms." data-solution="I established the brand system and lead ongoing graphic, social and video production — designing event visuals, weekly reels, sermon graphics and campaign assets, while directing the media workflow end to end.">
+            <span class="pnum">01</span>
+            <h3>REM Church Media &amp; Brand</h3>
+            <p>Ongoing brand, social and video design work — graphics, reels, and event visuals.</p>
+            <div class="pstack"><span>Branding</span><span>Premiere Pro</span><span>Social Design</span></div>
+            <div class="overlay"><span class="view">View Project</span></div>
+          </article>
+
           <!-- WEBSITES -->
-          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites" data-role="ICT &amp; Web Developer" data-year="2021 — Present" data-challenge="An established education foundation needed a polished, easy-to-manage web presence that staff could update without technical help." data-solution="I designed and built a custom WordPress site with a tailored theme and content structure, giving the team full control over content while keeping a refined, professional look.">
             <span class="pnum">01</span>
             <h3>Luigi Giussani Foundation</h3>
             <p>A full corporate site with custom design and content management for an education-focused foundation.</p>
             <div class="pstack"><span>WordPress</span><span>Custom Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites" data-role="Full-stack Developer" data-year="2022 — 2023" data-challenge="The institute required a modern, fast public website backed by a flexible admin system to manage programmes, news and academic content." data-solution="I built a NextJS frontend for speed and SEO, paired with a Laravel + Filament backend giving administrators a powerful, friendly dashboard to manage everything.">
             <span class="pnum">02</span>
             <h3>Luigi Giussani Institute of Higher Education</h3>
             <p>An institutional site with a modern frontend and a robust admin-driven backend for content.</p>
             <div class="pstack"><span>NextJS</span><span>Laravel</span><span>Filament</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="websites">
+          <article class="pcard reveal" data-cursor="grow" data-cat="websites" data-role="Web Designer &amp; Developer" data-year="2022" data-challenge="A growing ministry needed a website to share its outreach work, tell its story and make giving simple for supporters." data-solution="I delivered a clean, mission-driven site with clear storytelling, an outreach showcase and an accessible giving flow, all managed through a lightweight CMS.">
             <span class="pnum">03</span>
             <h3>Rural Evangelical Ministries</h3>
             <p>A mission-driven website spotlighting community outreach, ministry work and giving.</p>
@@ -489,28 +530,28 @@
           </article>
 
           <!-- WEB APPS -->
-          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps" data-role="Backend &amp; UI/UX Developer" data-year="2023" data-challenge="Teachers needed a single platform to access training materials and resources with a flow that felt simple, not technical." data-solution="I built the platform on Laravel with a carefully designed UI/UX, structuring resources and training journeys so educators could find and use what they needed quickly.">
             <span class="pnum">01</span>
             <h3>ACT Now Teacher Platform</h3>
             <p>A teacher training and resource platform with a tailored UI/UX flow built for educators.</p>
             <div class="pstack"><span>Laravel</span><span>UI/UX Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps" data-role="Full-stack Developer" data-year="2023" data-challenge="Users wanted a fast, modern way to discover movies and TV shows with rich detail and smooth browsing." data-solution="I built a VueJS frontend backed by a NodeJS API and MongoDB, delivering fast search, rich discovery and a responsive, app-like experience.">
             <span class="pnum">02</span>
             <h3>Flix 256</h3>
             <p>A movie &amp; TV search app with rich discovery, powered by a fast API-driven stack.</p>
             <div class="pstack"><span>VueJS</span><span>NodeJS</span><span>MongoDB</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps" data-role="Backend Developer" data-year="2023" data-challenge="The project needed a secure, reliable way to accept payments through several providers with consistent transaction handling." data-solution="I engineered a NodeJS + MongoDB gateway integrating multiple payment APIs, with robust transaction flows, validation and error handling built for scale.">
             <span class="pnum">03</span>
             <h3>Payment Gateway</h3>
             <p>A secure, scalable payment gateway integrating multiple provider APIs and transaction flows.</p>
             <div class="pstack"><span>NodeJS</span><span>MongoDB</span><span>Payment APIs</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="webapps">
+          <article class="pcard reveal" data-cursor="grow" data-cat="webapps" data-role="Full-stack Developer" data-year="2022" data-challenge="Listeners needed a quick, clean way to search and explore music and artists with responsive results." data-solution="I built a Laravel application with an efficient search experience and a clean, responsive interface that surfaces results instantly.">
             <span class="pnum">04</span>
             <h3>Music &amp; Artist Search App</h3>
             <p>A search experience for discovering music and artists with clean, responsive results.</p>
@@ -519,27 +560,18 @@
           </article>
 
           <!-- MOBILE APPS -->
-          <article class="pcard reveal" data-cursor="grow" data-cat="mobile">
+          <article class="pcard reveal" data-cursor="grow" data-cat="mobile" data-role="Mobile Developer" data-year="2023" data-challenge="Flix 256 needed a mobile companion so users could discover movies and TV on the go with a native, fluid feel." data-solution="I built the mobile experience on top of the same API-driven stack, focusing on smooth navigation, fast discovery and a responsive, native-feeling interface.">
             <span class="pnum">01</span>
             <h3>Flix 256</h3>
             <p>The mobile companion for Flix 256 — movie &amp; TV discovery on the go with a fluid native feel.</p>
             <div class="pstack"><span>Mobile</span><span>API-Driven</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
-          <article class="pcard reveal" data-cursor="grow" data-cat="mobile">
+          <article class="pcard reveal" data-cursor="grow" data-cat="mobile" data-role="Mobile Developer" data-year="2022" data-challenge="A tour operator wanted a mobile app for travellers to browse tours and destinations and book experiences easily." data-solution="I built a travel companion app with intuitive browsing of tours and destinations and a streamlined booking flow designed for travellers on the move.">
             <span class="pnum">02</span>
             <h3>Pearl Tour and Travel</h3>
             <p>A travel companion app for browsing tours, destinations and booking experiences.</p>
             <div class="pstack"><span>Mobile</span><span>Travel</span></div>
-            <div class="overlay"><span class="view">View Project</span></div>
-          </article>
-
-          <!-- GRAPHICS & DIGITAL -->
-          <article class="pcard reveal" data-cursor="grow" data-cat="graphics">
-            <span class="pnum">01</span>
-            <h3>REM Church Media &amp; Brand</h3>
-            <p>Ongoing brand, social and video design work — graphics, reels, and event visuals.</p>
-            <div class="pstack"><span>Branding</span><span>Premiere Pro</span><span>Social Design</span></div>
             <div class="overlay"><span class="view">View Project</span></div>
           </article>
         </div>
@@ -601,6 +633,27 @@
       </div>
     </section>
   </main>
+
+  <!-- PROJECT CASE MODAL -->
+  <div class="pmodal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="pmTitle" aria-hidden="true">
+    <div class="pmodal-backdrop" data-modal-close></div>
+    <div class="pmodal-card" role="document">
+      <button class="pmodal-close" type="button" aria-label="Close project details" data-modal-close>&times;</button>
+      <span class="pmodal-cat" id="pmCat"></span>
+      <h3 class="pmodal-title" id="pmTitle"></h3>
+      <div class="pmodal-role"><span id="pmRole"></span> · <span id="pmYear"></span></div>
+      <p class="pmodal-body" id="pmBody"></p>
+      <div class="pmodal-section">
+        <h4>The Challenge</h4>
+        <p id="pmChallenge"></p>
+      </div>
+      <div class="pmodal-section">
+        <h4>What I Did</h4>
+        <p id="pmSolution"></p>
+      </div>
+      <div class="pmodal-stack" id="pmStack"></div>
+    </div>
+  </div>
 
   <footer>
     <div class="wrap footer-inner">
@@ -826,7 +879,54 @@
         applyWorkFilter(tab.getAttribute("data-filter"));
       });
     });
-    if (workTabs.length) { applyWorkFilter("websites"); }
+    if (workTabs.length) { applyWorkFilter("graphics"); }
+
+    /* ---------- Project case modal ---------- */
+    var modal = document.getElementById("projectModal");
+    var catLabels = { graphics: "Graphics & Digital", websites: "Website", webapps: "Web App", mobile: "Mobile App" };
+    var lastFocused = null;
+    function openModal(card) {
+      lastFocused = document.activeElement;
+      document.getElementById("pmCat").textContent = catLabels[card.getAttribute("data-cat")] || "Project";
+      document.getElementById("pmTitle").textContent = card.querySelector("h3").textContent;
+      document.getElementById("pmRole").textContent = card.getAttribute("data-role") || "";
+      document.getElementById("pmYear").textContent = card.getAttribute("data-year") || "";
+      document.getElementById("pmBody").textContent = card.querySelector("p").textContent;
+      document.getElementById("pmChallenge").textContent = card.getAttribute("data-challenge") || "";
+      document.getElementById("pmSolution").textContent = card.getAttribute("data-solution") || "";
+      var stackHost = document.getElementById("pmStack");
+      stackHost.innerHTML = "";
+      card.querySelectorAll(".pstack span").forEach(function (s) {
+        var el = document.createElement("span");
+        el.textContent = s.textContent;
+        stackHost.appendChild(el);
+      });
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      var closeBtn = modal.querySelector(".pmodal-close");
+      if (closeBtn) closeBtn.focus();
+    }
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+    workCards.forEach(function (card) {
+      card.addEventListener("click", function () { openModal(card); });
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(card); }
+      });
+    });
+    Array.prototype.slice.call(modal.querySelectorAll("[data-modal-close]")).forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
 
     /* ---------- Contact form ---------- */
     var form = document.getElementById("contactForm");
