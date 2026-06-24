@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { PortfolioPage } from "../components/PortfolioPage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,29 +18,7 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  component: Index,
+  component: function Index() {
+    return <PortfolioPage />;
+  },
 });
-
-function Index() {
-  // The portfolio is authored as a single self-contained HTML file
-  // (HTML + CSS + JS + GSAP) served from /caleb-portfolio.html.
-  useEffect(() => {
-    window.location.replace("/portfolio");
-  }, []);
-
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#0A0A0F",
-        color: "#00E5A0",
-        fontFamily: "monospace",
-      }}
-    >
-      Loading…
-    </div>
-  );
-}
